@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MIRAE. STUDIO">
+<meta name="theme-color" content="#1a1814">
+<title>Réserver — MIRAE. STUDIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stone:#c8c0b0;
+  --stone-light:#e8e2d8;
+  --stone-dark:#a09880;
+  --warm-white:#f5f2ed;
+  --warm-off:#edeae4;
+  --ink:#1a1814;
+  --ink-soft:#3a3530;
+  --ink-faint:#8a847a;
+  --border:#d8d2c8;
+  --border-soft:#e8e2d8;
+  --radius:2px;
+  --radius-md:4px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Jost',sans-serif;
+  font-weight:300;
+  background:var(--warm-white);
+  color:var(--ink);
+  min-height:100vh;
+}
+
+/* HERO */
+.hero{
+  background:var(--ink);
+  padding:48px 24px 36px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:linear-gradient(135deg,rgba(200,192,176,.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-family:'Jost',sans-serif;
+  font-size:10px;font-weight:400;letter-spacing:.25em;
+  color:var(--stone-dark);text-transform:uppercase;margin-bottom:16px;
+}
+.hero-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:42px;font-weight:300;letter-spacing:.08em;
+  color:var(--warm-white);margin-bottom:4px;
+}
+.hero-studio{
+  font-family:'Jost',sans-serif;
+  font-size:11px;font-weight:400;letter-spacing:.35em;
+  color:var(--stone);text-transform:uppercase;margin-bottom:24px;
+}
+.hero-sub{
+  font-size:12px;font-weight:300;letter-spacing:.06em;
+  color:var(--stone-dark);
+}
+
+/* STEPS */
+.steps{
+  display:flex;background:var(--ink-soft);
+  border-bottom:0.5px solid rgba(200,192,176,.15);
+}
+.step{
+  flex:1;padding:12px 4px;text-align:center;
+  font-size:9px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(200,192,176,.4);border-bottom:1px solid transparent;
+  display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .3s;
+}
+.step-num{
+  width:20px;height:20px;border-radius:50%;
+  border:1px solid currentColor;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;
+}
+.step.active{color:var(--stone-light);border-bottom-color:var(--stone);}
+.step.done{color:var(--stone-dark);}
+
+/* PAGES */
+.page{display:none;padding:28px 20px 110px;max-width:480px;margin:0 auto}
+.page.active{display:block}
+
+/* SECTION TITLE */
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:300;letter-spacing:.04em;
+  color:var(--ink);margin-bottom:4px;
+}
+.section-sub{
+  font-size:11px;font-weight:300;letter-spacing:.08em;
+  color:var(--ink-faint);margin-bottom:24px;text-transform:uppercase;
+}
+
+/* SOINS */
+.scat-label{
+  font-size:9px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--stone-dark);padding:20px 0 10px;border-bottom:0.5px solid var(--border-soft);
+  margin-bottom:0;
+}
+.sopt{
+  display:flex;align-items:center;
+  padding:16px 0;border-bottom:0.5px solid var(--border-soft);
+  cursor:pointer;gap:14px;transition:all .2s;
+  user-select:none;-webkit-user-select:none;
+}
+.sopt:hover .sopt-name{color:var(--ink-soft);}
+.sopt.active{background:transparent;}
+.sopt.active .sopt-name{color:var(--ink);}
+.sopt-radio{
+  width:18px;height:18px;border-radius:50%;
+  border:1px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.sopt.active .sopt-radio{border-color:var(--ink);background:var(--ink);}
+.sopt-radio-dot{width:6px;height:6px;border-radius:50%;background:var(--warm-white);opacity:0;transition:opacity .2s;}
+.sopt.active .sopt-radio-dot{opacity:1;}
+.sopt-info{flex:1}
+.sopt-name{font-size:13px;font-weight:300;color:var(--ink-faint);letter-spacing:.02em;transition:color .2s;line-height:1.4;}
+.sopt-dur{font-size:10px;color:var(--stone-dark);margin-top:3px;letter-spacing:.06em;}
+.sopt-price{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--ink);flex-shrink:0;}
+
+/* JOURS */
+.day-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:0}
+.day-btn{
+  padding:14px 4px;border:0.5px solid var(--border);
+  background:transparent;text-align:center;cursor:pointer;
+  transition:all .2s;user-select:none;-webkit-user-select:none;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.day-btn:hover{border-color:var(--ink-faint);}
+.day-btn.active{background:var(--ink);border-color:var(--ink);}
+.day-btn.ferme{opacity:.25;cursor:not-allowed;}
+.day-nom{font-size:9px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:inherit;}
+.day-date{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:inherit;}
+.day-h{font-size:8px;letter-spacing:.08em;color:inherit;opacity:.6;}
+.day-btn.active .day-nom,.day-btn.active .day-date,.day-btn.active .day-h{color:var(--warm-white);}
+
+/* CRÉNEAUX */
+.cr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.cr-btn{
+  padding:12px 4px;border:0.5px solid var(--border);
+  background:transparent;font-family:'Jost',sans-serif;
+  font-size:12px;font-weight:300;letter-spacing:.04em;
+  cursor:pointer;color:var(--ink-soft);transition:all .2s;text-align:center;
+  user-select:none;-webkit-user-select:none;
+}
+.cr-btn:hover{border-color:var(--ink-faint);}
+.cr-btn.active{background:var(--ink);border-color:var(--ink);color:var(--warm-white);}
+.cr-btn.pris{background:var(--warm-off);color:var(--stone);cursor:not-allowed;font-size:10px;}
+
+/* INFOS */
+.form-field{margin-bottom:20px;}
+.form-label{
+  display:block;font-size:9px;font-weight:400;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px;
+}
+.form-input{
+  width:100%;padding:13px 0;
+  border:none;border-bottom:1px solid var(--border);
+  background:transparent;font-family:'Jost',sans-serif;
+  font-size:14px;font-weight:300;color:var(--ink);
+  outline:none;transition:border-color .2s;letter-spacing:.02em;
+}
+.form-input:focus{border-color:var(--ink);}
+.form-input::placeholder{color:var(--stone);}
+
+/* RÉCAP */
+.recap-block{
+  border:0.5px solid var(--border);padding:20px;margin-top:28px;
+}
+.recap-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;font-weight:300;letter-spacing:.06em;
+  color:var(--ink);margin-bottom:16px;
+}
+.recap-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:8px 0;border-bottom:0.5px solid var(--border-soft);
+}
+.recap-row:last-child{border-bottom:none;}
+.recap-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+.recap-val{font-size:13px;font-weight:300;color:var(--ink);text-align:right;max-width:65%;}
+.recap-price{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ink);}
+
+/* HINT */
+.hint-bar{
+  border-left:1px solid var(--stone);padding:8px 12px;margin-bottom:20px;
+  font-size:11px;font-weight:300;letter-spacing:.04em;color:var(--ink-faint);
+}
+
+/* DIVIDER */
+.divider{height:0.5px;background:var(--border-soft);margin:24px 0;}
+
+/* BARRE BAS */
+.bottom-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  padding:16px 20px 32px;
+  background:var(--warm-white);
+  border-top:0.5px solid var(--border);z-index:20;
+}
+.next-btn{
+  width:100%;max-width:480px;margin:0 auto;display:flex;
+  padding:16px 24px;
+  background:var(--ink);color:var(--warm-white);border:none;
+  font-family:'Jost',sans-serif;font-size:11px;font-weight:400;
+  letter-spacing:.2em;text-transform:uppercase;
+  cursor:pointer;justify-content:center;align-items:center;gap:12px;
+  transition:opacity .2s;
+}
+.next-btn:disabled{opacity:.25;cursor:not-allowed;}
+.next-btn:hover:not(:disabled){opacity:.82;}
+.next-arrow{font-size:16px;transition:transform .2s;}
+.next-btn:hover:not(:disabled) .next-arrow{transform:translateX(4px);}
+
+/* SUCCÈS */
+.success-wrap{text-align:center;padding:48px 24px;}
+.success-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-size:64px;font-weight:300;color:var(--ink);
+  margin-bottom:20px;display:block;
+}
+.success-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;font-weight:300;letter-spacing:.04em;
+  color:var(--ink);margin-bottom:8px;
+}
+.success-sub{
+  font-size:12px;font-weight:300;letter-spacing:.06em;
+  color:var(--ink-faint);line-height:1.8;margin-bottom:32px;
+}
+.success-card{
+  border:0.5px solid var(--border);padding:20px;
+  text-align:left;margin-bottom:28px;
+}
+.success-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--border-soft);}
+.success-row:last-child{border-bottom:none;}
+.success-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+.success-val{font-size:13px;font-weight:300;color:var(--ink);text-align:right;max-width:62%;}
+.success-note{
+  font-size:11px;font-weight:300;letter-spacing:.06em;
+  color:var(--stone-dark);margin-bottom:24px;
+}
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;border:0.5px solid var(--border);
+  background:transparent;color:var(--ink-faint);
+  font-family:'Jost',sans-serif;font-size:10px;
+  font-weight:400;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;
+  transition:all .2s;
+}
+.back-btn:hover{border-color:var(--ink);color:var(--ink);}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--warm-white);
+  padding:10px 20px;font-size:11px;letter-spacing:.08em;
+  z-index:100;opacity:0;transition:opacity .3s;white-space:nowrap;pointer-events:none;
+}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Réservation en ligne</div>
+  <div class="hero-logo">MIRAE.</div>
+  <div class="hero-studio">Studio</div>
+  <div class="hero-sub">Choisissez votre soin et votre créneau</div>
+</div>
+
+<div class="steps">
+  <div class="step active" id="s1"><div class="step-num">1</div>Soin</div>
+  <div class="step" id="s2"><div class="step-num">2</div>Jour</div>
+  <div class="step" id="s3"><div class="step-num">3</div>Heure</div>
+  <div class="step" id="s4"><div class="step-num">4</div>Infos</div>
+</div>
+
+<!-- PAGE 1 : SOIN -->
+<div class="page active" id="p1">
+  <div class="section-title">Votre soin</div>
+  <div class="section-sub">Sélectionnez une prestation</div>
+  <div id="soinList"></div>
+</div>
+
+<!-- PAGE 2 : JOUR -->
+<div class="page" id="p2">
+  <div class="section-title">Votre jour</div>
+  <div class="section-sub">Disponibilités de la semaine</div>
+  <div class="day-grid" id="dayGrid"></div>
+</div>
+
+<!-- PAGE 3 : CRÉNEAU -->
+<div class="page" id="p3">
+  <div class="section-title">Votre heure</div>
+  <div class="section-sub" id="crSub">Créneaux disponibles</div>
+  <div class="hint-bar" id="crHint" style="display:none"><span id="crHintTxt"></span></div>
+  <div class="cr-grid" id="crGrid"></div>
+</div>
+
+<!-- PAGE 4 : INFOS -->
+<div class="page" id="p4">
+  <div class="section-title">Vos informations</div>
+  <div class="section-sub">Pour confirmer votre rendez-vous</div>
+  <div class="form-field"><label class="form-label">Prénom &amp; Nom</label><input class="form-input" id="bNom" placeholder="Sophie Martin" type="text"></div>
+  <div class="form-field"><label class="form-label">Téléphone</label><input class="form-input" id="bTel" placeholder="06 00 00 00 00" type="tel"></div>
+  <div class="form-field"><label class="form-label">Note (optionnel)</label><input class="form-input" id="bNote" placeholder="Allergie, précision particulière..."></div>
+  <div class="recap-block">
+    <div class="recap-title">Récapitulatif</div>
+    <div class="recap-row"><span class="recap-lbl">Soin</span><span class="recap-val" id="recSoin">—</span></div>
+    <div class="recap-row"><span class="recap-lbl">Durée</span><span class="recap-val" id="recDur">—</span></div>
+    <div class="recap-row"><span class="recap-lbl">Jour</span><span class="recap-val" id="recJour">—</span></div>
+    <div class="recap-row"><span class="recap-lbl">Heure</span><span class="recap-val" id="recHeure">—</span></div>
+    <div class="recap-row"><span class="recap-lbl">Tarif</span><span class="recap-price" id="recPrix">—</span></div>
+  </div>
+</div>
+
+<!-- PAGE 5 : SUCCÈS -->
+<div class="page" id="p5">
+  <div class="success-wrap">
+    <span class="success-mark">✦</span>
+    <div class="success-title">Demande reçue</div>
+    <div class="success-sub">Mirae vous contactera très prochainement<br>pour confirmer votre rendez-vous.</div>
+    <div class="success-card">
+      <div class="success-row"><span class="success-lbl">Soin</span><span class="success-val" id="okSoin">—</span></div>
+      <div class="success-row"><span class="success-lbl">Quand</span><span class="success-val" id="okQuand">—</span></div>
+      <div class="success-row"><span class="success-lbl">Nom</span><span class="success-val" id="okNom">—</span></div>
+      <div class="success-row"><span class="success-lbl">Tarif</span><span class="success-val" id="okPrix">—</span></div>
+    </div>
+    <div class="success-note">MIRAE. STUDIO — À très bientôt</div>
+    <button class="back-btn" id="restartBtn">← Nouvelle réservation</button>
+  </div>
+</div>
+
+<div class="bottom-bar" id="bottomBar">
+  <button class="next-btn" id="nextBtn" disabled>
+    <span id="nextTxt">Sélectionnez un soin</span>
+    <span class="next-arrow">→</span>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var SOINS = [
+  {cat:'Rehaussement de cils', items:[
+    {nom:'Rehaussement avec ou sans teinture', prix:35, slots:1, dur:'1h'},
+    {nom:'Rehaussement + soin botox', prix:40, slots:2, dur:'1h30'},
+    {nom:'Korean Lashlift', prix:45, slots:1, dur:'1h'},
+    {nom:'Korean Lashlift + teinture', prix:50, slots:2, dur:'1h30'},
+    {nom:'Korean Lashlift + soin botox', prix:50, slots:2, dur:'1h30'},
+    {nom:'Korean Lashlift + botox + teinture', prix:55, slots:2, dur:'2h'}
+  ]},
+  {cat:'Browlift', items:[
+    {nom:'Browlift simple', prix:40, slots:1, dur:'1h'},
+    {nom:'Browlift + teinture', prix:45, slots:1, dur:'1h'},
+    {nom:'Browlift + décoloration', prix:50, slots:2, dur:'1h30'},
+    {nom:'Pack complet browlift / teinture / décoloration', prix:55, slots:2, dur:'1h30'}
+  ]},
+  {cat:'Soin visage', items:[
+    {nom:'Soin visage spécifique', prix:50, slots:1, dur:'1h'},
+    {nom:'Hydrafacial', prix:60, slots:1, dur:'1h'},
+    {nom:'Microneedling + Peeling visage', prix:65, slots:2, dur:'1h30'},
+    {nom:'Microneedling + Peeling visage + cou', prix:75, slots:2, dur:'2h'},
+    {nom:'Hydraneedling', prix:110, slots:2, dur:'2h'}
+  ]},
+  {cat:'Blanchiment dentaire', items:[
+    {nom:"Coup d'éclat 1x20 min", prix:30, slots:1, dur:'30min'},
+    {nom:'White 2x20 min', prix:60, slots:1, dur:'1h'},
+    {nom:'Ultra white 3x15 min', prix:80, slots:1, dur:'1h'}
+  ]}
+];
+
+var HORAIRES = {
+  0:{label:'Lundi',    h:'10h–18h', cr:['10h00','11h00','12h00','13h00','14h00','15h00','16h00','17h00']},
+  1:{label:'Mardi',    h:'10h–18h', cr:['10h00','11h00','12h00','13h00','14h00','15h00','16h00','17h00']},
+  2:{label:'Mercredi', h:'10h–14h', cr:['10h00','11h00','12h00','13h00']},
+  3:{label:'Jeudi',    h:'10h–18h', cr:['10h00','11h00','12h00','13h00','14h00','15h00','16h00','17h00']},
+  4:{label:'Vendredi', h:'10h–18h', cr:['10h00','11h00','12h00','13h00','14h00','15h00','16h00','17h00']},
+  5:{label:'Samedi',   h:'10h–14h', cr:['10h00','11h00','12h00','13h00']},
+  6:{label:'Dimanche', h:'Fermé',   cr:[]}
+};
+
+var FLAT=[]; SOINS.forEach(function(c){c.items.forEach(function(i){FLAT.push(i);});});
+var sel={soinIdx:-1,jourIdx:-1,crIdx:-1,creneau:'',nom:'',tel:'',note:''};
+var curPage=1;
+
+function buildSoins(){
+  var html='',gi=0;
+  SOINS.forEach(function(cat){
+    html+='<div class="scat-label">'+cat.cat+'</div>';
+    cat.items.forEach(function(item){
+      var active=sel.soinIdx===gi?' active':'';
+      html+='<div class="sopt'+active+'" data-si="'+gi+'">'+
+        '<div class="sopt-radio"><div class="sopt-radio-dot"></div></div>'+
+        '<div class="sopt-info">'+
+          '<div class="sopt-name">'+item.nom+'</div>'+
+          '<div class="sopt-dur">'+item.dur+'</div>'+
+        '</div>'+
+        '<div class="sopt-price">'+item.prix+' €</div>'+
+      '</div>';
+      gi++;
+    });
+  });
+  document.getElementById('soinList').innerHTML=html;
+  document.querySelectorAll('.sopt').forEach(function(el){
+    el.addEventListener('click',function(){
+      sel.soinIdx=parseInt(this.getAttribute('data-si'));
+      buildSoins();updBtn();
+    });
+  });
+}
+
+function buildJours(){
+  var now=new Date(),dow=now.getDay()===0?6:now.getDay()-1;
+  var html='';
+  for(var i=0;i<7;i++){
+    var h=HORAIRES[i],ferme=h.cr.length===0;
+    var d=new Date(now);d.setDate(now.getDate()-dow+i);
+    var active=sel.jourIdx===i?' active':'';
+    var fc=ferme?' ferme':'';
+    html+='<div class="day-btn'+active+fc+'" data-ji="'+i+'">'+
+      '<div class="day-nom">'+h.label.slice(0,3)+'</div>'+
+      '<div class="day-date">'+d.getDate()+'</div>'+
+      '<div class="day-h">'+(ferme?'Fermé':h.h)+'</div>'+
+    '</div>';
+  }
+  document.getElementById('dayGrid').innerHTML=html;
+  document.querySelectorAll('.day-btn:not(.ferme)').forEach(function(el){
+    el.addEventListener('click',function(){
+      sel.jourIdx=parseInt(this.getAttribute('data-ji'));
+      sel.crIdx=-1;sel.creneau='';
+      buildJours();updBtn();
+    });
+  });
+}
+
+function getRdvPris(j){
+  try{
+    var rdv=JSON.parse(localStorage.getItem('mirae_rdv')||'{}');
+    var cr=HORAIRES[j].cr,s={};
+    (rdv[j]||[]).forEach(function(r){
+      var st=cr.indexOf(r.h);
+      for(var k=0;k<(r.slots||1);k++)if(st+k<cr.length)s[st+k]=true;
+    });
+    return s;
+  }catch(e){return {};}
+}
+
+function buildCreneaux(){
+  var j=sel.jourIdx,h=HORAIRES[j];
+  var occ=getRdvPris(j),sn=sel.soinIdx>=0?FLAT[sel.soinIdx].slots:1;
+  document.getElementById('crSub').textContent=h.label+' — '+h.h;
+  var hint=document.getElementById('crHint');
+  if(sel.soinIdx>=0){
+    hint.style.display='block';
+    document.getElementById('crHintTxt').textContent='Durée estimée : '+FLAT[sel.soinIdx].dur;
+  }
+  var html='';
+  h.cr.forEach(function(cr,idx){
+    var pris=occ[idx]===true,imp=false;
+    if(!pris)for(var k=0;k<sn;k++)if(idx+k>=h.cr.length||occ[idx+k]){imp=true;break;}
+    var active=sel.crIdx===idx?' active':'';
+    if(pris||imp){
+      html+='<div class="cr-btn pris">'+cr+(pris?'<br><span style="font-size:9px;letter-spacing:.04em">Pris</span>':'')+'</div>';
+    } else {
+      html+='<div class="cr-btn'+active+'" data-idx="'+idx+'" data-cr="'+cr+'">'+cr+'</div>';
+    }
+  });
+  document.getElementById('crGrid').innerHTML=html;
+  document.querySelectorAll('.cr-btn:not(.pris)').forEach(function(el){
+    el.addEventListener('click',function(){
+      sel.crIdx=parseInt(this.getAttribute('data-idx'));
+      sel.creneau=this.getAttribute('data-cr');
+      buildCreneaux();updBtn();
+    });
+  });
+}
+
+function buildRecap(){
+  var now=new Date(),dow=now.getDay()===0?6:now.getDay()-1;
+  var d=new Date(now);d.setDate(now.getDate()-dow+sel.jourIdx);
+  var dateStr=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  var s=FLAT[sel.soinIdx];
+  document.getElementById('recSoin').textContent=s?s.nom:'—';
+  document.getElementById('recDur').textContent=s?s.dur:'—';
+  document.getElementById('recJour').textContent=dateStr;
+  document.getElementById('recHeure').textContent=sel.creneau||'—';
+  document.getElementById('recPrix').textContent=s?s.prix+' €':'—';
+}
+
+function showPage(n){
+  document.querySelectorAll('.page').forEach(function(p,i){p.classList.toggle('active',i+1===n);});
+  document.querySelectorAll('.step').forEach(function(s,i){
+    s.classList.remove('active','done');
+    if(i+1===n)s.classList.add('active');
+    else if(i+1<n)s.classList.add('done');
+  });
+  document.getElementById('bottomBar').style.display=n===5?'none':'block';
+  if(n===2)buildJours();
+  if(n===3)buildCreneaux();
+  if(n===4)buildRecap();
+  curPage=n;updBtn();
+  window.scrollTo(0,0);
+}
+
+function updBtn(){
+  var btn=document.getElementById('nextBtn'),txt=document.getElementById('nextTxt');
+  var labels=['Sélectionnez un soin','Continuer','Choisir ce jour','Choisir cet horaire','Confirmer la demande'];
+  var ok=[sel.soinIdx>=0,sel.soinIdx>=0,sel.jourIdx>=0,sel.crIdx>=0,true];
+  txt.textContent=labels[curPage-1]||'Continuer';
+  btn.disabled=!ok[curPage-1];
+}
+
+function confirmer(){
+  var nom=document.getElementById('bNom').value.trim();
+  var tel=document.getElementById('bTel').value.trim();
+  if(!nom||!tel){alert('Merci de renseigner votre prénom, nom et téléphone.');return;}
+  sel.nom=nom;sel.tel=tel;sel.note=document.getElementById('bNote').value.trim();
+  try{
+    var rdv=JSON.parse(localStorage.getItem('mirae_rdv')||'{}');
+    var j=sel.jourIdx;if(!rdv[j])rdv[j]=[];
+    var s=FLAT[sel.soinIdx];
+    rdv[j].push({h:sel.creneau,nom:sel.nom,soin:s.nom,prix:s.prix,dur:s.dur,slots:s.slots,dot:'#a09880',status:'new',tel:sel.tel,note:sel.note});
+    rdv[j].sort(function(a,b){return a.h.localeCompare(b.h);});
+    localStorage.setItem('mirae_rdv',JSON.stringify(rdv));
+  }catch(e){}
+  var now=new Date(),dow=now.getDay()===0?6:now.getDay()-1;
+  var d=new Date(now);d.setDate(now.getDate()-dow+sel.jourIdx);
+  var dateStr=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  var s=FLAT[sel.soinIdx];
+  document.getElementById('okSoin').textContent=s.nom;
+  document.getElementById('okQuand').textContent=dateStr+' à '+sel.creneau;
+  document.getElementById('okNom').textContent=sel.nom;
+  document.getElementById('okPrix').textContent=s.prix+' €';
+  showPage(5);
+}
+
+document.getElementById('nextBtn').addEventListener('click',function(){
+  if(curPage===4){confirmer();return;}
+  showPage(curPage+1);
+});
+document.getElementById('restartBtn').addEventListener('click',function(){
+  sel={soinIdx:-1,jourIdx:-1,crIdx:-1,creneau:'',nom:'',tel:'',note:''};
+  buildSoins();showPage(1);
+});
+buildSoins();
+</script>
+</body>
+</html>

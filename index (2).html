@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Studio Mirae">
+<meta name="theme-color" content="#D4537E">
+<title>Studio Mirae</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root{
+  --stone:#c8c0b0;--stone-light:#e8e2d8;--stone-dark:#a09880;--warm-white:#f5f2ed;--warm-off:#edeae4;--ink:#1a1814;--ink-soft:#3a3530;--ink-faint:#8a847a;
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  font-size:16px;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#1c1c1e;--bg2:#2c2c2e;--bg3:#3a3a3c;--txt:#f2f2f7;--txt2:#aeaeb2;--txt3:#636366;--border:#3a3a3c;--border2:#48484a;}
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Jost',sans-serif;font-weight:300;background:var(--warm-white);color:var(--ink);overscroll-behavior:none}
+.app{max-width:430px;margin:0 auto;padding-bottom:76px;min-height:100vh}
+
+/* HEADER */
+.header{padding:14px 16px 10px;border-bottom:0.5px solid var(--stone-light);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--warm-white);z-index:10;backdrop-filter:blur(10px)}
+.htitle{font-size:15px;font-weight:300;color:var(--ink);letter-spacing:.08em;font-family:'Cormorant Garamond',serif}
+.hsub{font-size:11px;color:var(--ink-faint);margin-top:1px}
+.av{height:34px;border-radius:17px;background:var(--warm-off);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink);padding:0 12px;letter-spacing:.04em}
+.save-dot{width:7px;height:7px;border-radius:50%;background:var(--stone-dark);margin-left:6px;flex-shrink:0;transition:background .3s}
+.save-dot.saving{background:var(--stone)}
+
+/* NAV */
+.nav{display:flex;border-bottom:0.5px solid var(--stone-light);position:sticky;top:57px;background:var(--warm-white);z-index:10;backdrop-filter:blur(10px)}
+.nb{flex:1;padding:9px 2px 8px;background:none;border:none;cursor:pointer;font-size:10px;color:var(--ink-faint);display:flex;flex-direction:column;align-items:center;gap:2px;border-bottom:2px solid transparent;transition:all .15s;position:relative;font-family:inherit}
+.nb i{font-size:20px}
+.nb.active{color:var(--ink);border-bottom-color:var(--ink-soft)}
+.nbadge{position:absolute;top:4px;right:16px;background:var(--ink-soft);color:#fff;border-radius:10px;font-size:9px;padding:1px 5px;font-weight:600;display:none}
+
+/* SECTIONS */
+.sec{display:none;padding:14px 16px}
+.sec.active{display:block}
+.lbl{font-size:9px;font-weight:400;color:var(--stone-dark);text-transform:uppercase;letter-spacing:.18em;margin:18px 0 10px;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid var(--stone-light);padding-bottom:8px}
+.lbl:first-child{margin-top:0}
+.cbadge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600}
+.cb-r{background:var(--warm-off);color:#a32d2d}
+.cb-a{background:var(--warm-off);color:#854f0b}
+.cb-g{background:var(--stone-light);color:#0f6e56}
+
+/* PILLS / STRIPS */
+.strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:5px;margin-bottom:14px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.pill{flex-shrink:0;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:500;border:0.5px solid var(--stone-light);cursor:pointer;color:var(--ink-faint);background:var(--warm-white);transition:all .15s;text-align:center;line-height:1.4;font-family:inherit}
+.pill.active{background:#a09880;color:#fff;border-color:var(--ink)}
+.pill.ferme{opacity:.35;cursor:default}
+.pill.purple.active{background:var(--ink-soft);border-color:var(--ink-soft)}
+
+/* RDV */
+.rdv-card{padding:11px 13px;border-radius:2px;border:0.5px solid var(--stone-light);margin-bottom:9px;background:var(--warm-white);display:flex;gap:10px;align-items:flex-start;cursor:pointer;transition:border .15s}
+.rdv-card:hover{border-color:var(--stone)}
+.rdv-time{font-size:11px;font-weight:600;color:var(--ink-faint);min-width:42px;padding-top:2px}
+.rdv-dot{width:9px;height:9px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.rdv-info{flex:1}
+.rdv-name{font-size:13px;font-weight:600;color:var(--ink)}
+.rdv-soin{font-size:12px;color:var(--ink-faint);margin-top:1px}
+.rdv-meta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
+.rdv-price{font-size:12px;font-weight:600;color:var(--ink)}
+.rdv-dur{font-size:11px;color:var(--stone-dark)}
+.badge{display:inline-block;font-size:9px;padding:2px 7px;border-radius:8px;font-weight:600}
+.b-ok{background:var(--stone-light);color:#0f6e56}
+.b-rap{background:var(--warm-off);color:#854f0b}
+.b-new{background:var(--warm-off);color:#3c3489}
+.ferme-msg{padding:28px;text-align:center;color:var(--ink-faint);font-size:13px}
+
+/* BOUTON ADD */
+.add-btn{width:100%;padding:13px;background:var(--ink);color:var(--warm-white);border:none;font-size:10px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-family:'Jost',sans-serif;transition:opacity .15s}
+.add-btn:hover{opacity:.85}
+
+/* CLIENTES */
+.cc{padding:12px 14px;border-radius:2px;border:0.5px solid var(--stone-light);margin-bottom:9px;background:var(--warm-white);cursor:pointer;transition:border .15s}
+.cc:hover{border-color:var(--stone)}
+.cc-top{display:flex;align-items:center;gap:10px}
+.cc-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.cc-info{flex:1}
+.cc-name{font-size:13px;font-weight:600;color:var(--ink)}
+.cc-last{font-size:11px;color:var(--ink-faint);margin-top:1px}
+.cc-n{font-size:20px;font-weight:700;color:var(--ink)}
+.cc-nl{font-size:9px;color:var(--ink-faint)}
+.fbar{margin-top:8px;background:var(--stone-light);border-radius:4px;height:4px}
+.fbar-fill{height:4px;border-radius:4px;background:var(--ink)}
+.fbar-lbl{display:flex;justify-content:space-between;margin-top:3px;font-size:9px;color:var(--ink-faint)}
+
+/* FICHE */
+.back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-faint);cursor:pointer;margin-bottom:14px;background:none;border:none;padding:0;font-family:inherit}
+.fiche-head{background:var(--warm-off);border-radius:2px;padding:16px;margin-bottom:13px;display:flex;gap:13px;align-items:center}
+.fiche-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
+.fiche-name{font-size:16px;font-weight:700;color:var(--ink)}
+.fiche-tel{font-size:12px;color:#993556;margin-top:3px}
+.fiche-note{font-size:11px;color:var(--ink);margin-top:6px;font-style:italic}
+.fid-box{background:var(--warm-white);border:0.5px solid var(--stone-light);border-radius:2px;padding:13px;margin-bottom:11px}
+.fid-dots{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0 6px}
+.fid-dot{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--stone);display:flex;align-items:center;justify-content:center;font-size:13px}
+.fid-dot.done{background:var(--ink);border-color:var(--ink)}
+.fid-dot.reward{background:var(--stone);border-color:var(--stone)}
+.histo-row{padding:10px 0;border-bottom:0.5px solid var(--stone-light);display:flex;justify-content:space-between;align-items:center}
+.histo-row:last-child{border-bottom:none}
+.histo-soin{font-size:12px;color:var(--ink)}
+.histo-date{font-size:10px;color:var(--ink-faint);margin-top:2px}
+.histo-price{font-size:12px;font-weight:600;color:var(--ink)}
+
+/* RAPPELS */
+.rap-card{padding:12px 14px;border-radius:2px;border:0.5px solid var(--stone-light);margin-bottom:9px;background:var(--warm-white);display:flex;gap:10px;align-items:center}
+.rap-left{flex:1}
+.rap-name{font-size:13px;font-weight:600;color:var(--ink)}
+.rap-detail{font-size:11px;color:var(--ink-faint);margin-top:1px}
+.rap-urg{font-size:10px;margin-top:4px;font-weight:600}
+.rap-urg.u{color:var(--ink-soft)}.rap-urg.s{color:var(--stone)}
+.icoBtn{width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all .15s}
+.icoBtn.phone{background:var(--warm-off);color:var(--ink)}
+.icoBtn.phone:hover{background:#a09880;color:#fff}
+.icoBtn.check{background:var(--stone-light);color:#0f6e56}
+.icoBtn.check:hover{background:var(--stone-dark);color:#fff}
+
+/* STOCKS */
+.prod-card{padding:12px 14px;border-radius:2px;border:0.5px solid var(--stone-light);margin-bottom:9px;background:var(--warm-white)}
+.prod-card.alerte{border-color:#f0997b}
+.prod-card.rupture{border-color:var(--ink-soft)}
+.prod-top{display:flex;align-items:center;gap:10px}
+.prod-icon{width:38px;height:38px;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.prod-info{flex:1;min-width:0}
+.prod-name{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod-cat{font-size:10px;color:var(--ink-faint);margin-top:1px}
+.pbar{background:var(--stone-light);border-radius:4px;height:4px;margin:9px 0 5px}
+.pbar-fill{height:4px;border-radius:4px}
+.prod-foot{display:flex;justify-content:space-between;align-items:center}
+.prod-foot-lbl{font-size:10px;color:var(--ink-faint)}
+.aBtn{font-size:11px;padding:4px 10px;border-radius:20px;border:0.5px solid;cursor:pointer;font-weight:600;background:none;font-family:inherit;transition:all .15s}
+.aBtn.r{color:#a32d2d;border-color:var(--ink-soft)}
+.aBtn.a{color:#854f0b;border-color:var(--stone)}
+.aBtn.g{color:#0f6e56;border-color:var(--stone-dark)}
+
+/* QR CODE */
+.qr-box{background:var(--warm-off);border-radius:2px;padding:20px;text-align:center;margin-bottom:14px}
+.qr-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.qr-sub{font-size:12px;color:#993556;margin-bottom:16px}
+#qrCanvas{border-radius:2px;background:#fff;padding:10px}
+.qr-url{font-size:11px;color:var(--ink-faint);margin-top:12px;word-break:break-all;background:var(--warm-white);border-radius:8px;padding:8px 10px}
+.qr-steps{background:var(--warm-white);border-radius:2px;padding:14px;margin-bottom:14px}
+.qr-step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.qr-step:last-child{margin-bottom:0}
+.step-num{width:24px;height:24px;border-radius:50%;background:#a09880;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.step-txt{font-size:12px;color:var(--ink);line-height:1.5;flex:1}
+.step-txt strong{color:var(--ink)}
+
+/* OVERLAY / FORMULAIRE */
+.foverlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;z-index:50}
+.fsheet{background:var(--warm-white);border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:430px;margin:0 auto;max-height:93vh;overflow-y:auto}
+.ftitle{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.xbtn{width:28px;height:28px;border-radius:50%;background:var(--warm-off);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-faint);font-size:15px}
+.fg{margin-bottom:13px}
+.fl{font-size:11px;font-weight:600;color:var(--ink-faint);margin-bottom:6px;display:block}
+.fl em{color:var(--ink);font-style:normal}
+.finput{width:100%;padding:10px 13px;border-radius:2px;border:0.5px solid var(--stone-light);background:var(--warm-white);font-size:13px;color:var(--ink);font-family:inherit}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qrow{display:flex;align-items:center;gap:10px}
+.qbtn{width:34px;height:34px;border-radius:50%;border:0.5px solid var(--stone-light);background:var(--warm-white);font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink);flex-shrink:0;font-family:inherit}
+.qval{font-size:18px;font-weight:600;color:var(--ink);min-width:30px;text-align:center}
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cbtn{padding:9px 2px;border-radius:2px;border:0.5px solid var(--stone-light);font-size:11px;font-weight:500;cursor:pointer;background:var(--warm-white);color:var(--ink);transition:all .15s;text-align:center;line-height:1.3;font-family:inherit}
+.cbtn.active{background:#a09880;color:#fff;border-color:var(--ink)}
+.cbtn.pris{background:var(--warm-off);color:var(--stone-dark);cursor:not-allowed;font-size:10px}
+.cbtn.bloque{background:var(--warm-off);color:var(--stone-dark);cursor:not-allowed;opacity:.45}
+.scat-lbl{font-size:10px;font-weight:700;color:var(--ink);margin:10px 0 5px;text-transform:uppercase;letter-spacing:.05em}
+.sopt{display:flex;align-items:center;padding:9px 12px;border-radius:2px;border:0.5px solid var(--stone-light);margin-bottom:5px;cursor:pointer;transition:all .15s;background:var(--warm-white);gap:8px}
+.sopt:hover{border-color:var(--stone)}
+.sopt.active{border-color:var(--ink);background:var(--warm-off)}
+.sopt-name{font-size:12px;color:var(--ink);flex:1}
+.sopt.active .sopt-name{color:var(--ink);font-weight:600}
+.sopt-r{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0}
+.sopt-price{font-size:12px;font-weight:700;color:var(--ink)}
+.sopt-dur{font-size:10px;color:var(--stone-dark)}
+.recap{background:var(--warm-off);border-radius:2px;padding:12px 14px;margin-bottom:16px}
+.rrow{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.rrow:last-child{margin-bottom:0}
+.rval{font-weight:600;color:var(--ink);text-align:right;font-size:11px;max-width:62%}
+.rlbl{color:var(--ink-faint)}
+.subBtn{width:100%;padding:13px;border-radius:2px;background:#a09880;color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.subBtn:disabled{opacity:.4;cursor:not-allowed}
+.subBtn:hover:not(:disabled){opacity:.88}
+.hint{background:var(--warm-off);border-radius:2px;padding:9px 12px;margin-bottom:9px;font-size:11px;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
+.srch{position:relative;margin-bottom:11px}
+.srch i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--stone-dark);font-size:16px}
+.srch input{width:100%;padding:9px 11px 9px 34px;border-radius:2px;border:0.5px solid var(--stone-light);background:var(--warm-white);font-size:13px;color:var(--ink);font-family:inherit}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:500;z-index:100;opacity:0;transition:opacity .3s;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header">
+  <div><div class="htitle">MIRAE. <span style='font-size:12px;letter-spacing:.2em;font-weight:300'>STUDIO</span></div><div class="hsub" id="dateHdr">Chargement…</div></div>
+  <div style="display:flex;align-items:center">
+    <div class="av">MIRAE.</div>
+    <div class="save-dot" id="saveDot"></div>
+  </div>
+</div>
+<nav class="nav">
+  <button class="nb active" onclick="showTab('planning',this)"><i class="ti ti-calendar"></i>Planning</button>
+  <button class="nb" onclick="showTab('clientes',this)"><i class="ti ti-users"></i>Clientes</button>
+  <button class="nb" onclick="showTab('rappels',this)"><i class="ti ti-bell"></i>Rappels<span class="nbadge" id="rapBadge"></span></button>
+  <button class="nb" onclick="showTab('stocks',this)"><i class="ti ti-box"></i>Stocks<span class="nbadge" id="stBadge"></span></button>
+  <button class="nb" onclick="showTab('qr',this)"><i class="ti ti-qrcode"></i>QR Résa</button>
+</nav>
+
+<!-- PLANNING -->
+<div id="tab-planning" class="sec active"><div style="text-align:center;padding:30px;color:var(--ink-faint)">Chargement…</div></div>
+
+<!-- CLIENTES -->
+<div id="tab-clientes" class="sec">
+  <div id="ficheView" style="display:none"></div>
+  <div id="clienteList"><div style="text-align:center;padding:30px;color:var(--ink-faint)">Chargement…</div></div>
+</div>
+
+<!-- RAPPELS -->
+<div id="tab-rappels" class="sec"><div style="text-align:center;padding:30px;color:var(--ink-faint)">Chargement…</div></div>
+
+<!-- STOCKS -->
+<div id="tab-stocks" class="sec"><div style="text-align:center;padding:30px;color:var(--ink-faint)">Chargement…</div></div>
+
+<!-- QR CODE -->
+<div id="tab-qr" class="sec">
+  <div class="qr-box">
+    <div class="qr-title">📲 QR Code de réservation</div>
+    <div class="qr-sub">Tes clientes scannent ce code pour réserver en ligne</div>
+    <canvas id="qrCanvas" width="180" height="180"></canvas>
+    <div class="qr-url" id="qrUrl">Configure l'URL après le déploiement</div>
+  </div>
+  <div class="qr-steps">
+    <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">🚀 Mise en ligne en 3 étapes</div>
+    <div class="qr-step"><div class="step-num">1</div><div class="step-txt">Va sur <strong>netlify.com</strong> et crée un compte gratuit</div></div>
+    <div class="qr-step"><div class="step-num">2</div><div class="step-txt">Glisse ce fichier HTML dans la zone de déploiement de Netlify</div></div>
+    <div class="qr-step"><div class="step-num">3</div><div class="step-txt">Netlify te donne une URL (ex: <strong>salon-mirae.netlify.app</strong>) — mets-la ici et le QR se génère automatiquement !</div></div>
+    <div style="margin-top:14px">
+      <div class="fl">Mon URL Netlify</div>
+      <div style="display:flex;gap:8px">
+        <input class="finput" id="netlifyUrl" placeholder="https://salon-mirae.netlify.app" style="flex:1">
+        <button onclick="setUrl()" style="padding:9px 14px;border-radius:2px;background:#a09880;color:#fff;border:none;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Générer QR</button>
+      </div>
+    </div>
+  </div>
+  <button class="add-btn" onclick="printQr()"><i class="ti ti-printer"></i> Imprimer le QR Code</button>
+</div>
+</div>
+
+<!-- FORMULAIRE RDV -->
+<div class="foverlay" id="fRdvOverlay" style="display:none">
+  <div class="fsheet">
+    <div class="ftitle">Nouveau rendez-vous <button class="xbtn" onclick="closeRdvForm()"><i class="ti ti-x"></i></button></div>
+    <div class="fg"><div class="fl">Soin <em>*</em> <span style="color:var(--stone-dark);font-weight:400">(choisir en premier)</span></div>
+      <div id="soinPicker" style="max-height:190px;overflow-y:auto;padding-right:2px"></div></div>
+    <div class="fg"><div class="fl">Jour <em>*</em></div><div class="strip" id="jsel" style="margin-bottom:0"></div></div>
+    <div class="fg"><div class="fl">Créneau <em>*</em></div>
+      <div class="hint"><i class="ti ti-info-circle" style="font-size:15px;flex-shrink:0"></i><span id="hintTxt">Choisis d'abord un soin</span></div>
+      <div class="cgrid" id="cgrid"></div></div>
+    <div class="fg"><div class="fl">Cliente <em>*</em></div>
+      <div class="strip" id="clisel" style="margin-bottom:0"></div></div>
+    <div class="recap" id="recapBox" style="display:none">
+      <div class="rrow"><span class="rlbl">Soin</span><span class="rval" id="rSoin">—</span></div>
+      <div class="rrow"><span class="rlbl">Durée</span><span class="rval" id="rDur">—</span></div>
+      <div class="rrow"><span class="rlbl">Quand</span><span class="rval" id="rQuand">—</span></div>
+      <div class="rrow"><span class="rlbl">Cliente</span><span class="rval" id="rCli">—</span></div>
+      <div class="rrow"><span class="rlbl">Tarif</span><span class="rval" id="rPrix">—</span></div>
+    </div>
+    <button class="subBtn" id="subRdvBtn" onclick="confirmerRdv()" disabled>Confirmer le rendez-vous</button>
+  </div>
+</div>
+
+<!-- FORMULAIRE CLIENTE -->
+<div class="foverlay" id="fCliOverlay" style="display:none">
+  <div class="fsheet">
+    <div class="ftitle">Nouvelle cliente <button class="xbtn" onclick="document.getElementById('fCliOverlay').style.display='none'"><i class="ti ti-x"></i></button></div>
+    <div class="fg"><div class="fl">Prénom &amp; Nom <em>*</em></div><input class="finput" id="cNom" placeholder="ex: Sophie Martin"></div>
+    <div class="fg"><div class="fl">Téléphone</div><input class="finput" id="cTel" placeholder="06 00 00 00 00" type="tel"></div>
+    <div class="fg"><div class="fl">Note / Allergie</div><input class="finput" id="cNote" placeholder="ex: Allergie latex"></div>
+    <button class="subBtn" onclick="ajouterCliente()">Ajouter la cliente</button>
+  </div>
+</div>
+
+<!-- FORMULAIRE PRODUIT -->
+<div class="foverlay" id="fProdOverlay" style="display:none">
+  <div class="fsheet">
+    <div class="ftitle">Nouveau produit <button class="xbtn" onclick="document.getElementById('fProdOverlay').style.display='none'"><i class="ti ti-x"></i></button></div>
+    <div class="fg"><div class="fl">Nom du produit <em>*</em></div><input class="finput" id="pNom" placeholder="ex: Sérum hyaluronique"></div>
+    <div class="fg"><div class="fl">Catégorie</div>
+      <select class="finput" id="pCat"><option>Rehaussement de cils</option><option>Browlift</option><option>Soin visage</option><option>Blanchiment dentaire</option><option>Autre</option></select></div>
+    <div class="frow">
+      <div class="fg"><div class="fl">Quantité</div>
+        <div class="qrow"><button class="qbtn" onclick="chgF('pQteV',-1)">−</button><div class="qval" id="pQteV">1</div><button class="qbtn" onclick="chgF('pQteV',1)">+</button></div></div>
+      <div class="fg"><div class="fl">Seuil alerte</div>
+        <div class="qrow"><button class="qbtn" onclick="chgF('pSeuilV',-1,1)">−</button><div class="qval" id="pSeuilV">2</div><button class="qbtn" onclick="chgF('pSeuilV',1)">+</button></div></div>
+    </div>
+    <div class="fg"><div class="fl">Unité</div>
+      <select class="finput" id="pUnit"><option>flacon(s)</option><option>tube(s)</option><option>pot(s)</option><option>kit(s)</option><option>sachet(s)</option><option>unité(s)</option></select></div>
+    <button class="subBtn" onclick="ajouterProduit()">Ajouter le produit</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DONNÉES =====
+const HORAIRES={
+  0:{label:'Lun',h:'10h–18h',cr:['10h00','11h00','12h00','13h00','14h00','15h00','16h00','17h00']},
+  1:{label:'Mar',h:'10h–18h',cr:['10h00','11h00','12h00','13h00','14h00','15h00','16h00','17h00']},
+  2:{label:'Mer',h:'10h–14h',cr:['10h00','11h00','12h00','13h00']},
+  3:{label:'Jeu',h:'10h–18h',cr:['10h00','11h00','12h00','13h00','14h00','15h00','16h00','17h00']},
+  4:{label:'Ven',h:'10h–18h',cr:['10h00','11h00','12h00','13h00','14h00','15h00','16h00','17h00']},
+  5:{label:'Sam',h:'10h–14h',cr:['10h00','11h00','12h00','13h00']},
+  6:{label:'Dim',h:'Fermé',cr:[]},
+};
+const SOINS=[
+  {cat:'Rehaussement de cils',items:[
+    {nom:'Rehaussement avec ou sans teinture',prix:35,slots:2,dur:'1h'},
+    {nom:'Rehaussement + soin botox',prix:40,slots:3,dur:'1h30'},
+    {nom:'Korean Lashlift',prix:45,slots:2,dur:'1h'},
+    {nom:'Korean Lashlift + teinture',prix:50,slots:3,dur:'1h30'},
+    {nom:'Korean Lashlift + soin botox',prix:50,slots:3,dur:'1h30'},
+    {nom:'Korean Lashlift + botox + teinture',prix:55,slots:4,dur:'2h'},
+  ]},
+  {cat:'Browlift',items:[
+    {nom:'Browlift simple',prix:40,slots:2,dur:'1h'},
+    {nom:'Browlift + teinture',prix:45,slots:2,dur:'1h'},
+    {nom:'Browlift + décoloration',prix:50,slots:3,dur:'1h30'},
+    {nom:'Pack complet browlift / teinture / décoloration',prix:55,slots:3,dur:'1h30'},
+  ]},
+  {cat:'Soin visage',items:[
+    {nom:'Soin visage spécifique',prix:50,slots:2,dur:'1h'},
+    {nom:'Hydrafacial',prix:60,slots:2,dur:'1h'},
+    {nom:'Microneedling + Peeling visage',prix:65,slots:3,dur:'1h30'},
+    {nom:'Microneedling + Peeling visage + cou',prix:75,slots:4,dur:'2h'},
+    {nom:'Hydraneedling',prix:110,slots:4,dur:'2h'},
+  ]},
+  {cat:'Blanchiment dentaire',items:[
+    {nom:"Coup d'éclat 1×20 min",prix:30,slots:1,dur:'30min'},
+    {nom:'White 2×20 min',prix:60,slots:2,dur:'1h'},
+    {nom:'Ultra white 3×15 min',prix:80,slots:2,dur:'1h'},
+  ]},
+];
+const DEF_RDV={};
+const DEF_CLI=[];
+const DEF_PROD=[];
+const DEF_RAPPELS=[];
+
+// ===== ÉTAT =====
+let RDV={},CLIENTES=[],PRODUITS=[],RAPPELS=[];
+let selDay=new Date().getDay()===0?6:new Date().getDay()-1;
+let activeFilter='Tous',nextCliId=100;
+let form={jour:selDay,creneau:null,cliente:null,soin:null,prix:null,slots:0,dur:''};
+let pQteVal=1,pSeuilVal=2;
+
+// ===== STORAGE (localStorage pour version standalone) =====
+function save(key,data){
+  try{localStorage.setItem(key,JSON.stringify(data));showSaveDot();}catch(e){}
+}
+function load(key,def){
+  try{const v=localStorage.getItem(key);return v?JSON.parse(v):JSON.parse(JSON.stringify(def));}
+  catch(e){return JSON.parse(JSON.stringify(def));}
+}
+function showSaveDot(){
+  const d=document.getElementById('saveDot');
+  d.classList.add('saving');
+  setTimeout(()=>d.classList.remove('saving'),700);
+}
+
+// ===== INIT =====
+function init(){
+  RDV=load('mirae_rdv',DEF_RDV);
+  const rdvInt={};Object.entries(RDV).forEach(([k,v])=>rdvInt[parseInt(k)]=v);RDV=rdvInt;
+  CLIENTES=load('mirae_cli',DEF_CLI);
+  PRODUITS=load('mirae_prod',DEF_PROD);
+  RAPPELS=JSON.parse(JSON.stringify(DEF_RAPPELS));
+  nextCliId=Math.max(...CLIENTES.map(c=>c.id),99)+1;
+  const now=new Date();
+  document.getElementById('dateHdr').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  buildPlanning();buildClientes();buildRappels();buildStocks();buildQR();
+}
+
+// ===== PLANNING =====
+function isFerme(i){return HORAIRES[i].cr.length===0;}
+function buildPlanning(){
+  const now=new Date(),dow=now.getDay()===0?6:now.getDay()-1;
+  const days=Array.from({length:7},(_,i)=>{
+    const d=new Date(now);d.setDate(now.getDate()-dow+i);
+    return{idx:i,label:HORAIRES[i].label+'<br><span style="font-size:9px;opacity:.7">'+d.getDate()+' '+d.toLocaleDateString('fr-FR',{month:'short'})+'</span>'};
+  });
+  document.getElementById('tab-planning').innerHTML=`
+    <div class="strip" id="dayStrip">${days.map(d=>`<div class="pill${d.idx===selDay?' active':''}${isFerme(d.idx)?' ferme':''}" onclick="${isFerme(d.idx)?'':'selDay='+d.idx+';buildPlanning();'}">${d.label}</div>`).join('')}</div>
+    <div id="rdvList"></div><div id="addWrap"></div>`;
+  buildRdvs();
+}
+function getSlotsOcc(j){
+  const cr=HORAIRES[j].cr,s=new Set();
+  (RDV[j]||[]).forEach(r=>{const st=cr.indexOf(r.h);for(let k=0;k<(r.slots||2);k++)if(st+k<cr.length)s.add(st+k);});
+  return s;
+}
+function buildRdvs(){
+  const l=document.getElementById('rdvList'),w=document.getElementById('addWrap');
+  if(!l)return;
+  if(isFerme(selDay)){l.innerHTML=`<div class="ferme-msg"><i class="ti ti-moon" style="font-size:28px;display:block;margin-bottom:10px;opacity:.4"></i>Salon fermé</div>`;w.innerHTML='';return;}
+  const rdvs=(RDV[selDay]||[]);
+  const bm={ok:'<span class="badge b-ok">Confirmé</span>',rappel:'<span class="badge b-rap">À rappeler</span>',new:'<span class="badge b-new">Nouvelle résa</span>'};
+  l.innerHTML=rdvs.length?rdvs.map(r=>`<div class="rdv-card" onclick="goFiche('${r.nom}')">
+    <div class="rdv-time">${r.h}</div><div class="rdv-dot" style="background:${r.dot}"></div>
+    <div class="rdv-info"><div class="rdv-name">${r.nom}</div><div class="rdv-soin">${r.soin}</div>
+    <div class="rdv-meta"><span class="rdv-price">${r.prix}€</span><span class="rdv-dur">${r.dur}</span>${bm[r.status]||''}</div></div>
+  </div>`).join(''):'<div style="padding:20px;text-align:center;font-size:13px;color:var(--ink-faint)">Journée libre — aucun rendez-vous 🌸</div>';
+  w.innerHTML=`<button class="add-btn" onclick="openRdvForm()"><i class="ti ti-plus"></i> Nouveau rendez-vous</button>`;
+}
+function goFiche(nom){const c=CLIENTES.find(x=>x.nom===nom);if(c)openFiche(c.id);}
+
+// ===== CLIENTES =====
+const COLS=[{bg:'#FBEAF0',tc:'#72243E'},{bg:'#E1F5EE',tc:'#085041'},{bg:'#FAEEDA',tc:'#633806'},{bg:'#E6F1FB',tc:'#0C447C'},{bg:'#EEEDFE',tc:'#3C3489'},{bg:'#EAF3DE',tc:'#27500A'}];
+function ini(nom){return nom.split(' ').map(p=>p[0]||'').join('').toUpperCase().slice(0,2);}
+function cCard(c){
+  const pct=Math.min((c.passages/10)*100,100),next=10-c.passages;
+  return `<div class="cc" onclick="openFiche(${c.id})">
+    <div class="cc-top"><div class="cc-av" style="background:${c.bg};color:${c.tc}">${c.ini}</div>
+    <div class="cc-info"><div class="cc-name">${c.nom}</div><div class="cc-last">${c.histo[0]?.s||'Nouvelle cliente'}</div></div>
+    <div style="text-align:right"><div class="cc-n">${c.passages}</div><div class="cc-nl">passage${c.passages>1?'s':''}</div></div></div>
+    <div class="fbar"><div class="fbar-fill" style="width:${pct}%"></div></div>
+    <div class="fbar-lbl"><span>${c.passages>=10?'🎁 Récompense !':next+' avant récompense'}</span><span>${c.passages}/10</span></div>
+  </div>`;
+}
+function buildClientes(list){
+  document.getElementById('clienteList').innerHTML=`
+    <div class="srch"><i class="ti ti-search"></i><input type="text" placeholder="Rechercher une cliente…" oninput="filterC(this.value)"></div>
+    <div id="cItems">${(list||CLIENTES).map(cCard).join('')}</div>
+    <button class="add-btn" onclick="document.getElementById('fCliOverlay').style.display='flex'"><i class="ti ti-plus"></i> Nouvelle cliente</button>`;
+}
+function filterC(q){document.getElementById('cItems').innerHTML=CLIENTES.filter(c=>c.nom.toLowerCase().includes(q.toLowerCase())).map(cCard).join('');}
+function openFiche(id){
+  const c=CLIENTES.find(x=>x.id===id);if(!c)return;
+  const dots=Array.from({length:10},(_,i)=>{
+    if(i<c.passages&&c.passages>=10)return`<div class="fid-dot reward"><i class="ti ti-gift" style="color:#fff;font-size:13px"></i></div>`;
+    if(i<c.passages)return`<div class="fid-dot done"><i class="ti ti-check" style="color:#fff;font-size:12px"></i></div>`;
+    return`<div class="fid-dot"></div>`;
+  }).join('');
+  document.getElementById('ficheView').innerHTML=`
+    <button class="back" onclick="closeFiche()"><i class="ti ti-arrow-left"></i> Retour</button>
+    <div class="fiche-head"><div class="fiche-av" style="background:${c.bg};color:${c.tc}">${c.ini}</div>
+      <div><div class="fiche-name">${c.nom}</div><div class="fiche-tel"><i class="ti ti-phone" style="font-size:11px"></i> ${c.tel||'—'}</div>
+      ${c.note?`<div class="fiche-note"><i class="ti ti-alert-circle" style="font-size:11px"></i> ${c.note}</div>`:''}</div></div>
+    <div class="fid-box">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:700">Carte fidélité</span><span style="font-size:13px;font-weight:700;color:var(--ink)">${c.passages}/10</span></div>
+      <div class="fid-dots">${dots}</div>
+      <div style="font-size:11px;color:var(--ink-faint)">${c.passages>=10?'🎁 Récompense disponible !':(10-c.passages)+' passage'+(10-c.passages>1?'s':'')+' avant la récompense'}</div>
+    </div>
+    <div class="lbl">Historique des soins</div>
+    <div style="background:var(--warm-white);border:0.5px solid var(--stone-light);border-radius:2px;padding:0 14px">
+      ${(c.histo||[]).length?c.histo.map(h=>`<div class="histo-row"><div><div class="histo-soin">${h.s}</div><div class="histo-date">${h.d}</div></div><div class="histo-price">${h.p}€</div></div>`).join(''):'<div style="padding:16px;text-align:center;color:var(--ink-faint);font-size:13px">Aucun soin enregistré</div>'}
+    </div>`;
+  document.getElementById('ficheView').style.display='block';
+  document.getElementById('clienteList').style.display='none';
+  showTab('clientes',document.querySelectorAll('.nb')[1]);
+}
+function closeFiche(){
+  document.getElementById('ficheView').style.display='none';
+  document.getElementById('clienteList').style.display='block';
+  buildClientes();
+}
+function ajouterCliente(){
+  const nom=document.getElementById('cNom').value.trim();
+  if(!nom){showToast('Entre un prénom et nom');return;}
+  const col=COLS[CLIENTES.length%COLS.length];
+  CLIENTES.push({id:nextCliId++,nom,ini:ini(nom),bg:col.bg,tc:col.tc,tel:document.getElementById('cTel').value.trim(),note:document.getElementById('cNote').value.trim(),passages:0,histo:[]});
+  save('mirae_cli',CLIENTES);
+  document.getElementById('fCliOverlay').style.display='none';
+  ['cNom','cTel','cNote'].forEach(id=>document.getElementById(id).value='');
+  buildClientes();showToast('Cliente ajoutée !');
+}
+
+// ===== RAPPELS =====
+function buildRappels(){
+  const u=RAPPELS.filter(r=>r.u==='u'),s=RAPPELS.filter(r=>r.u==='s');
+  const b=document.getElementById('rapBadge');b.textContent=u.length;b.style.display=u.length?'':'none';
+  const card=r=>`<div class="rap-card"><div class="rap-left"><div class="rap-name">${r.nom}</div><div class="rap-detail">${r.soin}</div><div class="rap-detail">${r.rdv}</div>${r.u==='u'?'<div class="rap-urg u">⚡ Urgent</div>':'<div class="rap-urg s">📅 À venir</div>'}</div>
+    <button class="icoBtn phone"><i class="ti ti-phone"></i></button>
+    <button class="icoBtn check" onclick="this.closest('.rap-card').style.opacity='.3'"><i class="ti ti-check"></i></button></div>`;
+  document.getElementById('tab-rappels').innerHTML=`
+    <div class="lbl"><i class="ti ti-alert-circle" style="color:var(--ink-soft);font-size:14px"></i>Urgent<span class="cbadge cb-r">${u.length}</span></div>${u.map(card).join('')}
+    <div class="lbl"><i class="ti ti-clock" style="color:var(--stone);font-size:14px"></i>À venir<span class="cbadge cb-a">${s.length}</span></div>${s.map(card).join('')}`;
+}
+
+// ===== STOCKS =====
+const FCATS=['Tous','Rehaussement de cils','Browlift','Soin visage','Blanchiment dentaire'];
+const CSTYLE={'Rehaussement de cils':{icon:'ti-eye',bg:'#FBEAF0',ic:'#72243E'},'Browlift':{icon:'ti-sparkles',bg:'#EAF3DE',ic:'#27500A'},'Soin visage':{icon:'ti-droplet',bg:'#E1F5EE',ic:'#085041'},'Blanchiment dentaire':{icon:'ti-tooth',bg:'#E6F1FB',ic:'#0C447C'},'Autre':{icon:'ti-package',bg:'#f0efe9',ic:'#555'}};
+function stSt(p){return p.qte===0?'rupture':p.qte<=p.seuil?'alerte':'ok';}
+function buildStocks(){
+  const f=activeFilter==='Tous'?PRODUITS:PRODUITS.filter(p=>p.cat===activeFilter);
+  const rup=f.filter(p=>stSt(p)==='rupture'),aler=f.filter(p=>stSt(p)==='alerte'),ok=f.filter(p=>stSt(p)==='ok');
+  const nb=PRODUITS.filter(p=>stSt(p)!=='ok').length;
+  const b=document.getElementById('stBadge');b.textContent=nb;b.style.display=nb?'':'none';
+  let html=`<div class="strip">${FCATS.map(c=>`<div class="pill${activeFilter===c?' active':''}" onclick="activeFilter='${c}';buildStocks()">${c}</div>`).join('')}</div>`;
+  if(rup.length)html+=`<div class="lbl"><i class="ti ti-alert-circle" style="color:var(--ink-soft);font-size:14px"></i>Rupture<span class="cbadge cb-r">${rup.length}</span></div>`+rup.map(pCard).join('');
+  if(aler.length)html+=`<div class="lbl"><i class="ti ti-alert-triangle" style="color:var(--stone);font-size:14px"></i>Stock bas<span class="cbadge cb-a">${aler.length}</span></div>`+aler.map(pCard).join('');
+  if(ok.length)html+=`<div class="lbl"><i class="ti ti-circle-check" style="color:var(--stone-dark);font-size:14px"></i>En stock<span class="cbadge cb-g">${ok.length}</span></div>`+ok.map(pCard).join('');
+  html+=`<button class="add-btn" onclick="document.getElementById('fProdOverlay').style.display='flex'"><i class="ti ti-plus"></i> Ajouter un produit</button>`;
+  document.getElementById('tab-stocks').innerHTML=html;
+}
+function pCard(p){
+  const st=stSt(p),pct=Math.min(Math.round((p.qte/(p.seuil*2+.01))*100),100);
+  const col=st==='rupture'?'#E24B4A':st==='alerte'?'#BA7517':'#1D9E75';
+  const bc=st==='rupture'?'r':st==='alerte'?'a':'g';
+  const idx=PRODUITS.indexOf(p);
+  return `<div class="prod-card${st==='rupture'?' rupture':st==='alerte'?' alerte':''}">
+    <div class="prod-top"><div class="prod-icon" style="background:${p.bg}"><i class="ti ${p.icon}" style="color:${p.ic}"></i></div>
+    <div class="prod-info"><div class="prod-name">${p.nom}</div><div class="prod-cat">${p.cat}</div></div>
+    <div style="text-align:right;flex-shrink:0"><div style="font-size:18px;font-weight:700;color:${col}">${p.qte}</div><div style="font-size:9px;color:var(--ink-faint)">${p.unit}</div></div></div>
+    <div class="pbar"><div class="pbar-fill" style="width:${pct}%;background:${col}"></div></div>
+    <div class="prod-foot"><span class="prod-foot-lbl">Alerte ≤ ${p.seuil} ${p.unit}</span>
+    <div style="display:flex;gap:6px">${p.qte>0?`<button class="aBtn g" onclick="chgQte(${idx},-1)">− 1</button>`:''}
+    <button class="aBtn g" onclick="chgQte(${idx},1)">+ 1</button>
+    <button class="aBtn ${bc}" style="opacity:.7">${st==='rupture'?'Commander':st==='alerte'?'Réappro':'OK'}</button></div></div>
+  </div>`;
+}
+function chgQte(i,d){PRODUITS[i].qte=Math.max(0,PRODUITS[i].qte+d);save('mirae_prod',PRODUITS);buildStocks();showToast(d>0?'+ 1 ajouté':'− 1 retiré');}
+function chgF(id,d,min=0){
+  if(id==='pQteV'){pQteVal=Math.max(min,pQteVal+d);document.getElementById('pQteV').textContent=pQteVal;}
+  else{pSeuilVal=Math.max(1,pSeuilVal+d);document.getElementById('pSeuilV').textContent=pSeuilVal;}
+}
+function ajouterProduit(){
+  const nom=document.getElementById('pNom').value.trim();
+  if(!nom){showToast('Entre un nom de produit');return;}
+  const cat=document.getElementById('pCat').value,unit=document.getElementById('pUnit').value;
+  const style=CSTYLE[cat]||CSTYLE['Autre'];
+  PRODUITS.push({nom,cat,qte:pQteVal,seuil:pSeuilVal,unit,...style});
+  save('mirae_prod',PRODUITS);
+  document.getElementById('fProdOverlay').style.display='none';
+  document.getElementById('pNom').value='';pQteVal=1;pSeuilVal=2;
+  document.getElementById('pQteV').textContent=1;document.getElementById('pSeuilV').textContent=2;
+  buildStocks();showToast('Produit ajouté !');
+}
+
+// ===== QR CODE (génération simple sans lib externe) =====
+function buildQR(){
+  const url=localStorage.getItem('mirae_booking_url')||'';
+  if(url){document.getElementById('netlifyUrl').value=url;generateQR(url);}
+}
+function setUrl(){
+  const url=document.getElementById('netlifyUrl').value.trim();
+  if(!url){showToast('Entre ton URL Netlify');return;}
+  localStorage.setItem('mirae_booking_url',url);
+  document.getElementById('qrUrl').textContent=url+'/booking';
+  generateQR(url+'/booking');
+  showToast('QR Code généré !');
+}
+
+// QR code minimaliste via API publique gratuite
+function generateQR(url){
+  const canvas=document.getElementById('qrCanvas');
+  const img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=function(){
+    const ctx=canvas.getContext('2d');
+    canvas.width=180;canvas.height=180;
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,180,180);
+    ctx.drawImage(img,10,10,160,160);
+  };
+  img.onerror=function(){
+    // fallback: afficher le lien
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,180,180);
+    ctx.fillStyle='#D4537E';ctx.font='12px sans-serif';ctx.textAlign='center';
+    ctx.fillText('Lien copié —',90,80);ctx.fillText('colle-le sur',90,100);ctx.fillText('qr-code-generator.com',90,120);
+  };
+  img.src=`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}&color=D4537E&bgcolor=FFFFFF`;
+}
+function printQr(){
+  const url=localStorage.getItem('mirae_booking_url');
+  if(!url){showToast('Configure d\'abord ton URL');return;}
+  const w=window.open('','_blank');
+  w.document.write(`<html><body style="text-align:center;padding:40px;font-family:sans-serif">
+    <h2 style="color:#D4537E;margin-bottom:8px">Salon Mirae</h2>
+    <p style="margin-bottom:20px;color:#666">Scannez pour réserver votre soin</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url+'/booking')}&color=D4537E" width="300">
+    <p style="margin-top:16px;color:#666;font-size:13px">${url}/booking</p>
+    <script>window.onload=()=>window.print()<\/script>
+  </body></html>`);
+}
+
+// ===== FORMULAIRE RDV =====
+function openRdvForm(){
+  form={jour:selDay,creneau:null,cliente:null,soin:null,prix:null,slots:0,dur:''};
+  bfSoins();bfJours();bfCreneaux();bfClientes();updRecap();
+  document.getElementById('fRdvOverlay').style.display='flex';
+}
+function closeRdvForm(){document.getElementById('fRdvOverlay').style.display='none';}
+// Flatten soins pour accès par index
+var FLAT_SOINS_IDX={};
+(function(){var idx=0;SOINS.forEach(function(cat){cat.items.forEach(function(item){FLAT_SOINS_IDX[idx]=item;idx++;});});})();
+
+function bfSoins(){
+  var html='';
+  var globalIdx=0;
+  SOINS.forEach(function(cat){
+    html+='<div class="scat-lbl">'+cat.cat+'</div>';
+    cat.items.forEach(function(item){
+      var active=form.soin===item.nom?' active':'';
+      html+='<div class="sopt'+active+'" data-si="'+globalIdx+'">'+
+        '<span class="sopt-name">'+item.nom+'</span>'+
+        '<div class="sopt-r"><span class="sopt-price">'+item.prix+'€</span><span class="sopt-dur">'+item.dur+'</span></div>'+
+      '</div>';
+      globalIdx++;
+    });
+  });
+  document.getElementById('soinPicker').innerHTML=html;
+  document.querySelectorAll('.sopt').forEach(function(el){
+    el.addEventListener('click',function(){
+      var idx=parseInt(this.getAttribute('data-si'));
+      var item=FLAT_SOINS_IDX[idx];
+      form.soin=item.nom;form.prix=item.prix;form.slots=item.slots;form.dur=item.dur;form.creneau=null;
+      bfSoins();bfCreneaux();updRecap();
+    });
+  });
+}
+
+function bfJours(){
+  var now=new Date(),dow=now.getDay()===0?6:now.getDay()-1;
+  var html='';
+  Object.entries(HORAIRES).forEach(function([i,h]){
+    var idx=parseInt(i),f=isFerme(idx);
+    var d=new Date(now);d.setDate(now.getDate()-dow+idx);
+    var active=form.jour===idx?' active':'';
+    var ferme=f?' ferme':'';
+    html+='<div class="pill'+active+ferme+' purple" data-ji="'+idx+'">'+h.label+'<br><span style="font-size:9px;opacity:.7">'+(f?'Fermé':d.getDate()+' '+d.toLocaleDateString('fr-FR',{month:'short'}))+'</span></div>';
+  });
+  document.getElementById('jsel').innerHTML=html;
+  document.querySelectorAll('#jsel .pill:not(.ferme)').forEach(function(el){
+    el.addEventListener('click',function(){
+      form.jour=parseInt(this.getAttribute('data-ji'));
+      form.creneau=null;bfJours();bfCreneaux();updRecap();
+    });
+  });
+}
+
+function bfCreneaux(){
+  var cr=HORAIRES[form.jour].cr,occ=getSlotsOcc(form.jour),sn=form.slots||1;
+  document.getElementById('hintTxt').textContent=form.soin?'Durée : '+form.dur+' — créneaux bloqués auto':"Choisis d'abord un soin";
+  var html='';
+  cr.forEach(function(h,idx){
+    var pris=occ.has(idx);var imp=false;
+    if(!pris){for(var k=0;k<sn;k++){if(idx+k>=cr.length||occ.has(idx+k)){imp=true;break;}}}
+    if(form.creneau===h){html+='<button class="cbtn active">'+h+'</button>';}
+    else if(pris){html+='<button class="cbtn pris">'+h+'<br><span style="font-size:9px">Pris</span></button>';}
+    else if(imp){html+='<button class="cbtn bloque">'+h+'<br><span style="font-size:9px">Court</span></button>';}
+    else{html+='<button class="cbtn" data-cr="'+h+'">'+h+'</button>';}
+  });
+  document.getElementById('cgrid').innerHTML=html;
+  document.querySelectorAll('#cgrid .cbtn:not(.pris):not(.bloque):not(.active)').forEach(function(el){
+    el.addEventListener('click',function(){
+      form.creneau=this.getAttribute('data-cr');bfCreneaux();updRecap();
+    });
+  });
+}
+
+function bfClientes(){
+  var html='<div class="pill'+(form.cliente===null?' active':'')+'" data-cli="__nouvelle__">+ Nouvelle</div>';
+  CLIENTES.forEach(function(c){
+    html+='<div class="pill'+(form.cliente===c.nom?' active':'')+'" data-cli="'+c.id+'">'+c.nom+'</div>';
+  });
+  document.getElementById('clisel').innerHTML=html;
+  document.querySelectorAll('#clisel .pill').forEach(function(el){
+    el.addEventListener('click',function(){
+      var v=this.getAttribute('data-cli');
+      if(v==='__nouvelle__'){form.cliente=null;}
+      else{var c=CLIENTES.find(function(x){return x.id===parseInt(v);});form.cliente=c?c.nom:null;}
+      bfClientes();updRecap();
+    });
+  });
+}
+function updRecap(){
+  const ok=form.creneau&&form.soin&&form.cliente!==undefined;
+  document.getElementById('recapBox').style.display=ok?'block':'none';
+  document.getElementById('subRdvBtn').disabled=!ok;
+  if(form.soin)document.getElementById('rSoin').textContent=form.soin;
+  if(form.dur)document.getElementById('rDur').textContent=form.dur;
+  if(form.creneau)document.getElementById('rQuand').textContent=HORAIRES[form.jour].label+' à '+form.creneau;
+  document.getElementById('rCli').textContent=form.cliente||'Nouvelle cliente';
+  if(form.prix)document.getElementById('rPrix').textContent=form.prix+'€';
+}
+function confirmerRdv(){
+  if(!RDV[form.jour])RDV[form.jour]=[];
+  const cols=['#D4537E','#1D9E75','#378ADD','#BA7517','#7F77DD','#639922'];
+  RDV[form.jour].push({h:form.creneau,nom:form.cliente||'Nouvelle cliente',soin:form.soin,prix:form.prix,dur:form.dur,slots:form.slots,dot:cols[Math.floor(Math.random()*cols.length)],status:'ok'});
+  RDV[form.jour].sort((a,b)=>a.h.localeCompare(b.h));
+  const c=CLIENTES.find(x=>x.nom===form.cliente);
+  if(c){c.passages++;const now=new Date();c.histo.unshift({s:form.soin,d:now.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}),p:form.prix});save('mirae_cli',CLIENTES);}
+  save('mirae_rdv',RDV);
+  closeRdvForm();selDay=form.jour;buildPlanning();
+  showToast('✅ Rendez-vous confirmé !');
+}
+
+// ===== NAV =====
+function showTab(name,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');btn.classList.add('active');
+  if(name==='clientes')closeFiche();
+}
+
+// ===== TOAST =====
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ===== GO =====
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
