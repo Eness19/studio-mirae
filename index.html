@@ -334,22 +334,22 @@ const HORAIRES={
 const SOINS=[
   {cat:'Rehaussement de cils',items:[
     {nom:'Rehaussement avec ou sans teinture',prix:35,slots:2,dur:'1h'},
-    {nom:'Rehaussement + soin botox',prix:40,slots:3,dur:'1h30'},
+    {nom:'Rehaussement + soin botox',prix:40,slots:1,dur:'1h'},
     {nom:'Korean Lashlift',prix:45,slots:2,dur:'1h'},
-    {nom:'Korean Lashlift + teinture',prix:50,slots:3,dur:'1h30'},
-    {nom:'Korean Lashlift + soin botox',prix:50,slots:3,dur:'1h30'},
+    {nom:'Korean Lashlift + teinture',prix:50,slots:1,dur:'1h'},
+    {nom:'Korean Lashlift + soin botox',prix:50,slots:1,dur:'1h'},
     {nom:'Korean Lashlift + botox + teinture',prix:55,slots:4,dur:'2h'},
   ]},
   {cat:'Browlift',items:[
     {nom:'Browlift simple',prix:40,slots:2,dur:'1h'},
     {nom:'Browlift + teinture',prix:45,slots:2,dur:'1h'},
-    {nom:'Browlift + décoloration',prix:50,slots:3,dur:'1h30'},
-    {nom:'Pack complet browlift / teinture / décoloration',prix:55,slots:3,dur:'1h30'},
+    {nom:'Browlift + décoloration',prix:50,slots:1,dur:'1h'},
+    {nom:'Pack complet browlift / teinture / décoloration',prix:55,slots:1,dur:'1h'},
   ]},
   {cat:'Soin visage',items:[
     {nom:'Soin visage spécifique',prix:50,slots:2,dur:'1h'},
     {nom:'Hydrafacial',prix:60,slots:2,dur:'1h'},
-    {nom:'Microneedling + Peeling visage',prix:65,slots:3,dur:'1h30'},
+    {nom:'Microneedling + Peeling visage',prix:65,slots:1,dur:'1h'},
     {nom:'Microneedling + Peeling visage + cou',prix:75,slots:4,dur:'2h'},
     {nom:'Hydraneedling',prix:110,slots:4,dur:'2h'},
   ]},
@@ -364,11 +364,83 @@ const DEF_CLI=[];
 const DEF_PROD=[];
 const DEF_RAPPELS=[];
 
+
+
+// ===== FLAT SOINS & COMBOS =====
+var FLAT_SOINS = [];
+SOINS.forEach(function(cat){cat.items.forEach(function(i){FLAT_SOINS.push(i);});});
+
+var COMBOS = [
+  // Rehaussement + Browlift
+  ['Rehaussement avec ou sans teinture','Browlift simple'],
+  ['Rehaussement avec ou sans teinture','Browlift + teinture'],
+  ['Rehaussement avec ou sans teinture','Browlift + décoloration'],
+  ['Rehaussement avec ou sans teinture','Pack complet browlift / teinture / décoloration'],
+  ['Rehaussement + soin botox','Browlift simple'],
+  ['Rehaussement + soin botox','Browlift + teinture'],
+  ['Rehaussement + soin botox','Browlift + décoloration'],
+  ['Rehaussement + soin botox','Pack complet browlift / teinture / décoloration'],
+  // Korean + Browlift
+  ['Korean Lashlift','Browlift simple'],
+  ['Korean Lashlift','Browlift + teinture'],
+  ['Korean Lashlift','Browlift + décoloration'],
+  ['Korean Lashlift','Pack complet browlift / teinture / décoloration'],
+  ['Korean Lashlift + teinture','Browlift simple'],
+  ['Korean Lashlift + teinture','Browlift + teinture'],
+  ['Korean Lashlift + teinture','Browlift + décoloration'],
+  ['Korean Lashlift + teinture','Pack complet browlift / teinture / décoloration'],
+  ['Korean Lashlift + soin botox','Browlift simple'],
+  ['Korean Lashlift + soin botox','Browlift + teinture'],
+  ['Korean Lashlift + soin botox','Browlift + décoloration'],
+  ['Korean Lashlift + soin botox','Pack complet browlift / teinture / décoloration'],
+  ['Korean Lashlift + botox + teinture','Browlift simple'],
+  ['Korean Lashlift + botox + teinture','Browlift + teinture'],
+  ['Korean Lashlift + botox + teinture','Browlift + décoloration'],
+  ['Korean Lashlift + botox + teinture','Pack complet browlift / teinture / décoloration'],
+  // Rehaussement + Blanchiment
+  ['Rehaussement avec ou sans teinture',"Coup d'éclat 1x20 min"],
+  ['Rehaussement avec ou sans teinture','White 2x20 min'],
+  ['Rehaussement + soin botox',"Coup d'éclat 1x20 min"],
+  ['Rehaussement + soin botox','White 2x20 min'],
+  // Korean + Blanchiment
+  ['Korean Lashlift',"Coup d'éclat 1x20 min"],
+  ['Korean Lashlift','White 2x20 min'],
+  ['Korean Lashlift + teinture',"Coup d'éclat 1x20 min"],
+  ['Korean Lashlift + teinture','White 2x20 min'],
+  ['Korean Lashlift + soin botox',"Coup d'éclat 1x20 min"],
+  ['Korean Lashlift + soin botox','White 2x20 min'],
+  ['Korean Lashlift + botox + teinture',"Coup d'éclat 1x20 min"],
+  ['Korean Lashlift + botox + teinture','White 2x20 min'],
+];
+
+function isCombo(idxs){
+  var noms=idxs.map(function(i){return FLAT_SOINS[i].nom;});
+  for(var c=0;c<COMBOS.length;c++){
+    var combo=COMBOS[c];
+    if(combo.length===idxs.length && combo.every(function(n){return noms.indexOf(n)>=0;})) return true;
+  }
+  return false;
+}
+
+function getTotalSlots(idxs){
+  if(!idxs||idxs.length===0) return 0;
+  if(isCombo(idxs)) return 1;
+  var t=0; idxs.forEach(function(i){t+=FLAT_SOINS[i].slots;}); return t;
+}
+
+function getTotalPrixF(idxs){
+  var t=0; idxs.forEach(function(i){t+=FLAT_SOINS[i].prix;}); return t;
+}
+
+function slotsToLabel(s){
+  if(s===0)return'—'; if(s===1)return'1h'; return s+'h';
+}
+
 // ===== ÉTAT =====
 let RDV={},CLIENTES=[],PRODUITS=[],RAPPELS=[];
 let selDay=new Date().getDay()===0?6:new Date().getDay()-1;
 let activeFilter='Tous',nextCliId=100;
-let form={jour:selDay,creneau:null,cliente:null,soin:null,prix:null,slots:0,dur:''};
+let form={jour:selDay,creneau:null,cliente:null,soins:[],prix:null,slots:0,dur:''};
 let pQteVal=1,pSeuilVal=2;
 
 // ===== STORAGE (localStorage pour version standalone) =====
@@ -603,35 +675,47 @@ function printQr(){
 
 // ===== FORMULAIRE RDV =====
 function openRdvForm(){
-  form={jour:selDay,creneau:null,cliente:null,soin:null,prix:null,slots:0,dur:''};
+  form={jour:selDay,creneau:null,cliente:null,soins:[],prix:null,slots:0,dur:''};
   bfSoins();bfJours();bfCreneaux();bfClientes();updRecap();
   document.getElementById('fRdvOverlay').style.display='flex';
 }
 function closeRdvForm(){document.getElementById('fRdvOverlay').style.display='none';}
 // Flatten soins pour accès par index
-var FLAT_SOINS_IDX={};
-(function(){var idx=0;SOINS.forEach(function(cat){cat.items.forEach(function(item){FLAT_SOINS_IDX[idx]=item;idx++;});});})();
+
 
 function bfSoins(){
-  var html='';
-  var globalIdx=0;
+  var html='';var gi=0;
   SOINS.forEach(function(cat){
     html+='<div class="scat-lbl">'+cat.cat+'</div>';
     cat.items.forEach(function(item){
-      var active=form.soin===item.nom?' active':'';
-      html+='<div class="sopt'+active+'" data-si="'+globalIdx+'">'+
+      var active=form.soins.indexOf(gi)>=0?' active':'';
+      html+='<div class="sopt'+active+'" data-si="'+gi+'">'+
         '<span class="sopt-name">'+item.nom+'</span>'+
         '<div class="sopt-r"><span class="sopt-price">'+item.prix+'€</span><span class="sopt-dur">'+item.dur+'</span></div>'+
       '</div>';
-      globalIdx++;
+      gi++;
     });
   });
+  // Résumé si plusieurs soins
+  if(form.soins.length>0){
+    var totalSlots=getTotalSlots(form.soins);
+    var totalPrix=getTotalPrixF(form.soins);
+    html+='<div style="padding:12px;border-top:0.5px solid var(--stone-light);background:var(--warm-off);margin-top:6px">'+
+      '<div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px">Sélection</div>'+
+      form.soins.map(function(i){return'<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;color:var(--ink)"><span>'+FLAT_SOINS[i].nom+'</span><span>'+FLAT_SOINS[i].prix+'€</span></div>';}).join('')+
+      '<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500;padding-top:6px;border-top:0.5px solid var(--stone-light);margin-top:4px;color:var(--ink)">'+
+        '<span>Total — '+slotsToLabel(totalSlots)+'</span>'+
+        '<span>'+totalPrix+'€</span>'+
+      '</div>'+
+    '</div>';
+  }
   document.getElementById('soinPicker').innerHTML=html;
   document.querySelectorAll('.sopt').forEach(function(el){
     el.addEventListener('click',function(){
       var idx=parseInt(this.getAttribute('data-si'));
-      var item=FLAT_SOINS_IDX[idx];
-      form.soin=item.nom;form.prix=item.prix;form.slots=item.slots;form.dur=item.dur;form.creneau=null;
+      var pos=form.soins.indexOf(idx);
+      if(pos>=0){form.soins.splice(pos,1);}else{form.soins.push(idx);}
+      form.creneau=null;
       bfSoins();bfCreneaux();updRecap();
     });
   });
@@ -657,8 +741,9 @@ function bfJours(){
 }
 
 function bfCreneaux(){
-  var cr=HORAIRES[form.jour].cr,occ=getSlotsOcc(form.jour),sn=form.slots||1;
-  document.getElementById('hintTxt').textContent=form.soin?'Durée : '+form.dur+' — créneaux bloqués auto':"Choisis d'abord un soin";
+  var cr=HORAIRES[form.jour].cr,occ=getSlotsOcc(form.jour),sn=getTotalSlots(form.soins)||1;
+  var ts=getTotalSlots(form.soins);
+document.getElementById('hintTxt').textContent=form.soins.length>0?'Durée totale : '+slotsToLabel(ts)+' — créneaux bloqués auto':"Choisis d'abord un soin";
   var html='';
   cr.forEach(function(h,idx){
     var pris=occ.has(idx);var imp=false;
@@ -682,6 +767,17 @@ function bfClientes(){
     html+='<div class="pill'+(form.cliente===c.nom?' active':'')+'" data-cli="'+c.id+'">'+c.nom+'</div>';
   });
   document.getElementById('clisel').innerHTML=html;
+  // Formulaire nouvelle cliente
+  var nouvelleForm=form.cliente===null?
+    '<div id="nouvCliForm" style="margin-top:10px;padding:12px;border:0.5px solid var(--stone-light);background:var(--warm-off)">'+
+      '<div style="font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px">Informations cliente</div>'+
+      '<input id="ncNom" placeholder="Prénom & Nom *" style="width:100%;padding:9px 10px;border:0.5px solid var(--stone-light);background:var(--warm-white);font-size:13px;margin-bottom:7px;font-family:Jost,sans-serif;color:var(--ink)">'+
+      '<input id="ncTel" placeholder="Téléphone *" type="tel" style="width:100%;padding:9px 10px;border:0.5px solid var(--stone-light);background:var(--warm-white);font-size:13px;margin-bottom:7px;font-family:Jost,sans-serif;color:var(--ink)">'+
+      '<input id="ncInsta" placeholder="Instagram (optionnel)" style="width:100%;padding:9px 10px;border:0.5px solid var(--stone-light);background:var(--warm-white);font-size:13px;font-family:Jost,sans-serif;color:var(--ink)">'+
+    '</div>':'';
+  var existing=document.getElementById('nouvCliForm');
+  if(existing) existing.remove();
+  document.getElementById('clisel').insertAdjacentHTML('afterend', nouvelleForm);
   document.querySelectorAll('#clisel .pill').forEach(function(el){
     el.addEventListener('click',function(){
       var v=this.getAttribute('data-cli');
@@ -692,14 +788,15 @@ function bfClientes(){
   });
 }
 function updRecap(){
-  const ok=form.creneau&&form.soin&&form.cliente!==undefined;
+  var ok=form.creneau&&form.soins.length>0&&form.cliente!==undefined;
   document.getElementById('recapBox').style.display=ok?'block':'none';
   document.getElementById('subRdvBtn').disabled=!ok;
-  if(form.soin)document.getElementById('rSoin').textContent=form.soin;
-  if(form.dur)document.getElementById('rDur').textContent=form.dur;
+  var noms=form.soins.map(function(i){return FLAT_SOINS[i].nom;}).join(' + ');
+  document.getElementById('rSoin').textContent=noms||'—';
+  document.getElementById('rDur').textContent=slotsToLabel(getTotalSlots(form.soins));
   if(form.creneau)document.getElementById('rQuand').textContent=HORAIRES[form.jour].label+' à '+form.creneau;
   document.getElementById('rCli').textContent=form.cliente||'Nouvelle cliente';
-  if(form.prix)document.getElementById('rPrix').textContent=form.prix+'€';
+  document.getElementById('rPrix').textContent=getTotalPrixF(form.soins)+'€';
 }
 function confirmerRdv(){
   if(!RDV[form.jour])RDV[form.jour]=[];
